@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block title %} Equipamento - {{ object }} | {{ block.super }} {% endblock %}
+{% block content %}
+<section class="content-header">
+    <h1>Equipamento - {{ object }} | {{ object.cliente }}</h1>
+    <ol class="breadcrumb">
+        <li>
+            <a href="{% url 'empresa:cliente:cliente_dashboard' object.cliente.empresa.pk object.cliente.pk %}">
+                Dashboard
+            </a>
+        </li>
+        <li><a href="{% url 'empresa:cliente:equipamento_list' object.cliente.empresa.pk object.cliente.pk %}">Equipamentos</a></li>
+        <li class="active">{{ object }}</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            {% include 'alert.html' %}
+        </div>
+        <div class="col-md-12">
+
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <a class="btn btn-sm btn-info" href="{% url 'empresa:cliente:equipamento_list'  object.cliente.empresa.pk object.cliente.pk %}">
+                            <i class="fa fa-reply" aria-hidden="true"></i> 
+                            Voltar
+                        </a>
+                    </div>
+                    <div class="box-body table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <tr>
+                                <th>Unidade:</th>
+                                <td>{{ object.ambiente.unidade.nome }}</td>
+                            </tr>
+                            <tr>
+                                <th>Departamento:</th>
+                                <td>{{ object.ambiente.atividade.nome }}</td>
+                            </tr>
+                            <tr>
+                                <th>Ambiente:</th>
+                                <td>{{ object.ambiente.nome }}</td>
+                            </tr>
+                            <tr>
+                                <th>Grupo:</th>
+                                <td>{{ object.grupo.nome }}</td>
+                            </tr>
+                            <tr>
+                                <th>Nome:</th>
+                                <td>{{ object.nome }}</td>
+                            </tr>
+                            <tr>
+                                <th>Identificação:</th>
+                                <td>{{ object.identificacao }}</td>
+                            </tr>
+                            <tr>
+                                <th>Fabricante:</th>
+                                <td>{{ object.fabricante }}</td>
+                            </tr>
+                            <tr>
+                                <th>Capacidade Térmica:</th>
+                                <td>{{ object.capacidade }} BTUs</td>
+                            </tr>
+                            <tr>
+                                <th>Ativo?</th>
+                                <td>
+                                    {% if object.ativo %}
+                                        <label class="label label-success">Ativo</label>
+                                    {% else %}
+                                        <label class="label label-danger">Desativado em {{ object.data_desativado }}</label> 
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Observações</th>
+                                <td>
+                                    {{ object.observacao }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Anexos</th>
+                                <td>
+                                    <ul class="list-group">
+                                    {% for anexo in object.anexos.all %}
+                                        <li class="list-group-item">
+                                            <a href="{{ anexo.anexo.url }}" target="_blank"> {{ anexo.nome }}</a>
+                                        </li>
+                                    {% endfor %}
+                                    </ul>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+
+{% block title %}
+    Excluír Anexo | {{ block.super }}
+{% endblock %}
+
+{% block content %}
+<section class="content-header">
+    <h1>Excluír Anexo | {{ object.cliente }}</h1>
+    <ol class="breadcrumb">
+        <li>
+            <a href="{% url 'empresa:cliente:cliente_dashboard' object.cliente.empresa.pk object.cliente.pk %}">
+                Dashboard
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'empresa:cliente:anexo_list' object.cliente.empresa.pk object.cliente.pk %}">
+                Anexos
+            </a>
+        </li>
+        <li class="active">Excluír</li>
+    </ol>
+</section>
+<section class="content">
+    {% include 'form_delete.html' %}
+</section>
+{% endblock %}

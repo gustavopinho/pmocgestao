@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block title %} Unidade - {{ object }} | {{ block.super }} {% endblock %}
+{% block content %}
+<section class="content-header">
+    <h1>Unidade - {{ object }} | {{ object.cliente }}</h1>
+    <ol class="breadcrumb">
+        <li><a href="{% url 'empresa:cliente:cliente_dashboard' object.cliente.empresa.pk object.cliente.pk %}">Dashboard</a></li>
+        <li><a href="{% url 'empresa:cliente:unidade_list' object.cliente.empresa.pk object.cliente.pk %}">Unidades</a></li>
+        <li class="active">{{ object }}</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            {% include 'alert.html' %}
+        </div>
+        <div class="col-md-12">
+
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <a class="btn btn-sm btn-info" href="{% url 'empresa:cliente:unidade_list'  object.cliente.empresa.pk object.cliente.pk %}">
+                            <i class="fa fa-reply" aria-hidden="true"></i> 
+                            Voltar
+                        </a>
+                    </div>
+                    <div class="box-body table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <tr>
+                                <th>Nome:</th>
+                                <td>{{ object.nome }}</td>
+                            </tr>
+                            <tr>
+                                <th>Responsável Técnico:</th>
+                                <td>{{ object.responsavel.nome }}</td>
+                            </tr>
+                            <tr>
+                                <th>Endereço:</th>
+                                <td>
+                                    {{ object.logradouro }}, {{ object.numero }} - {{ object.bairro }}, {{ object.cidade }}-{{ object.uf }} - CEP {{ object.cep }}
+                                    {% if object.complemento %}
+                                    <br> Complemento: {{ object.complemento }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Contato:</th>
+                                <td>
+                                    {% if object.fone %}
+                                        <b>Telefone </b> {{ object.fone }} <br>
+                                    {% endif %}
+                                    {% if object.celular %}
+                                        <b>Celular </b> {{ object.celular }} <br>
+                                    {% endif %}
+                                    {% if object.email %}
+                                        <b>Email </b> {{ object.email }} <br>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

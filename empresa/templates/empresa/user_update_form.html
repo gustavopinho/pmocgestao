@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+
+{% block title %}
+    Usuário | {{ block.super }}
+{% endblock %}
+
+{% block content %}
+<section class="content-header">
+    <h1>Cadastrar Usuário</h1>
+    <ol class="breadcrumb">
+        <li><a href="{% url 'core:dashboard' %}">Dashboard</a></li>
+        <li><a href="{% url 'empresa:user_list' empresa.pk %}">Usuários</a></li>
+        <li class="active">Cadastro</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            {% include 'alert.html' %}
+        </div>
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <a class="btn btn-sm btn-info" href="{% url 'empresa:user_list' empresa.pk %}">
+                        <i class="fa fa-reply" aria-hidden="true"></i> 
+                        Voltar
+                    </a>
+                </div>
+                <div class="box-body table-responsive">
+                    <form class="form" method="post">{% csrf_token %}
+                        <div class="col-md-7 form-group{% if form.name.errors %} has-error{% endif %}">
+                            <label for="{{ form.name.auto_id }}" class="control-label">
+                                {{ form.name.label }}
+                            </label>
+                            {% render_field form.name class='form-control' %}
+                            {% for error in form.name.errors %}
+                                <span class="help-block">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-7 form-group{% if form.email.errors %} has-error{% endif %}">
+                            <label for="{{ form.email.auto_id }}" class="control-label">
+                                {{ form.email.label }}
+                            </label>
+                            {% render_field form.email class='form-control' %}
+                            {% for error in form.email.errors %}
+                                <span class="help-block">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-7 form-group{% if form.is_active.errors %} has-error{% endif %}">
+                            <label for="{{ form.is_active.auto_id }}" class="control-label">
+                                {{ form.is_active.label }}
+                            </label>
+                            {% render_field form.is_active class='' %}
+                            {% for error in form.is_active.errors %}
+                                <span class="help-block">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-7 text-right">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fa fa-floppy-o" aria-hidden="true"></i> 
+                                Salvar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

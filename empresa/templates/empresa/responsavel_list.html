@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+{% load pagination %}
+{% load numbering %}
+
+{% block title %}
+    Responsável Técnico | {{ block.super }}
+{% endblock %}
+
+{% block content %}
+<section class="content-header">
+    <h1>Responsável Técnico</h1>
+    <ol class="breadcrumb">
+        <li><a href="{% url 'core:dashboard' %}">Dashboard</a></li>
+        <li class="active">Responsável Técnico</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            {% include 'alert.html' %}
+        </div>
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">
+                        <a class="btn btn-sm btn-success" href="{% url 'empresa:responsavel_create' empresa.pk %}" >
+                            <i class="fa fa-plus-circle" aria-hidden="true"></i> 
+                            Novo
+                        </a>
+                    </h3>
+                    {% include 'search.html' %}
+                </div>
+                <div class="box-body table-responsive">
+                    <div class="table-responsive">
+                        <table class="table table-condensed table-hover">
+                            <tr>
+                                <th>#</th>
+                                <th>Nome</th>
+                                <th>E-mail</th>
+                                <th>Telefone</th>
+                                <th></th>
+                            </tr>
+                            {% for obj in page_obj %}
+                            <tr>
+                                <td>
+                                    {% numbering page_obj.number forloop.counter0 20 %}
+                                </td>
+                                <td>{{ obj.nome }}</td>
+                                <td>{{ obj.email }}</td>
+                                <td>{{ obj.fone }}</td>
+                                <td class="text-right">
+                                    <a href="{% url 'empresa:responsavel_update' empresa.pk obj.pk %}" class="btn btn-sm btn-info">
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 
+                                        Editar
+                                    </a>
+                                    <a href="{% url 'empresa:responsavel_delete' empresa.pk obj.pk %}" class="btn btn-sm btn-danger">
+                                        <i class="fa fa-trash-o" aria-hidden="true"></i> 
+                                        Excluír
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    <div class="box-footer">
+                        {% pagination request paginator page_obj %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

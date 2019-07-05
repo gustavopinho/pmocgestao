@@ -1,0 +1,11 @@
+{% if 'PMOCADMIN' in user.checkgroup or user.is_staff %}
+    {% include 'empresa/adminsidebar.html' %}
+{% endif %}
+
+{% if 'PMOCTECNICO' in user.checkgroup %}
+    {% include 'empresa/tecnicosidebar.html' %}
+{% endif %}
+
+{% if 'PMOCCLIENTE' in user.checkgroup %}
+    {% include 'cliente/sidebar.html' %}
+{% endif %}

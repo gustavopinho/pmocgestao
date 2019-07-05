@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block title %}
+    Cadastro de Ambiente | {{ block.super }}
+{% endblock %}
+
+{% block content %}
+<section class="content-header">
+    <h1>Cadastrar Registro de Manutenção | {{ cliente }}</h1>
+    <ol class="breadcrumb">
+        <li><a href="{% url 'core:dashboard' %}">Dashboard</a></li>
+        <li><a href="{% url 'empresa:cliente:registro_manutencao_list' empresa.pk cliente.pk %}">Registros de Manutenção</a></li>
+        <li class="active">Cadastro</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            {% include 'alert.html' %}
+        </div>
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <a class="btn btn-sm btn-info" href="{% url 'empresa:cliente:registro_manutencao_list' empresa.pk cliente.pk %}">
+                        <i class="fa fa-reply" aria-hidden="true"></i> 
+                        Voltar
+                    </a>
+                </div>
+                <div class="box-body table-responsive">
+                    <form class="form" method="post">{% csrf_token %}
+                        <fieldset>
+                            <legend>Dados da Manutenção</legend>
+                            <div class="col-md-6 form-group{% if form.equipamento.errors %} has-error{% endif %}">
+                                <label for="{{ form.equipamento.auto_id }}" class="control-label">
+                                    {{ form.equipamento.label }}
+                                </label>
+                                {% render_field form.equipamento class='form-control' %}
+                                {% for error in form.equipamento.errors %}
+                                    <span class="help-block">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-6 form-group{% if form.tecnico.errors %} has-error{% endif %}">
+                                <label for="{{ form.tecnico.auto_id }}" class="control-label">
+                                    {{ form.tecnico.label }}
+                                </label>
+                                {% render_field form.tecnico class='form-control' %}
+                                {% for error in form.tecnico.errors %}
+                                    <span class="help-block">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-6 form-group{% if form.tipo.errors %} has-error{% endif %}">
+                                <label for="{{ form.tipo.auto_id }}" class="control-label">
+                                    {{ form.tipo.label }}
+                                </label>
+                                {% render_field form.tipo class='form-control' %}
+                                {% for error in form.tipo.errors %}
+                                    <span class="help-block">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-6 form-group{% if form.data_prevista.errors %} has-error{% endif %}">
+                                <label for="{{ form.data_prevista.auto_id }}" class="control-label">
+                                    {{ form.data_prevista.label }}
+                                </label>
+                                {% render_field form.data_prevista class='form-control datepicker' %}
+                                {% for error in form.data_prevista.errors %}
+                                    <span class="help-block">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-6 form-group{% if form.data_execucao.errors %} has-error{% endif %}">
+                                <label for="{{ form.data_execucao.auto_id }}" class="control-label">
+                                    {{ form.data_execucao.label }}
+                                </label>
+                                {% render_field form.data_execucao class='form-control datepicker' %}
+                                {% for error in form.data_execucao.errors %}
+                                    <span class="help-block">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Observações</legend>
+                             <div class="col-md-12 form-group{% if form.observacao.errors %} has-error{% endif %}">
+                                <label for="{{ form.observacao.auto_id }}" class="control-label">
+                                    {{ form.observacao.label }}
+                                </label>
+                                {% render_field form.observacao class='form-control' %}
+                                {% for error in form.observacao.errors %}
+                                    <span class="help-block">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        </fieldset>
+                        <div class="col-md-12 text-right">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fa fa-floppy-o" aria-hidden="true"></i> 
+                                Salvar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

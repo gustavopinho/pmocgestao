@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    404 Not Found - |{{ block.super }}
+{% endblock %}
+
+{% block content %}
+<section class="content-header">
+    <h1>404 Not Found</h1>
+    <ol class="breadcrumb">
+        <li><a href="{% url 'core:dashboard' %}">Dashboard</a></li>
+        <li class="active">404 Not Found</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            {% include 'alert.html' %}
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="error-page">
+            <h2 class="headline text-yellow">404</h2>
+            <div class="error-content">
+                <h3><i class="fa fa-warning text-yellow"></i> 404 Not Found  - Página não encontrada!</h3>
+                <p>
+                    A página que está procurando não pode ser encontrada.
+                    Você pode <a href="{% url 'core:dashboard' %}">retornar para o dashboard</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+    
+{% endblock %}

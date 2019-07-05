@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+{% load pagination %}
+{% load numbering %}
+
+{% block title %}
+    Relatórios | {{ block.super }}
+{% endblock %}
+
+{% block content %}
+<section class="content-header">
+    <h1>Ferramentas</h1>
+    <ol class="breadcrumb">
+        <li>
+            <a href="{% url 'empresa:cliente:cliente_dashboard' cliente.empresa.pk cliente.pk %}">
+                Dashboard
+            </a>
+        </li>
+        <li class="active">Ferramentas</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            {% include 'alert.html' %}
+        </div>
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Gerar Plano de Manutenção Anual</h3>
+                </div>
+                <div class="box-body">
+                    <form class="form" method="GET" action="{% url 'empresa:cliente:ferramentas_gerar_pmoc' empresa.pk cliente.pk %}">
+                        <div class="row">
+                            <div class="col-md-3 form-group">
+                                <input class="form-control datepicker" type="text" name="start_date" placeholder="Data inícial" required="required">
+                            </div>
+                            <div class="col-md-9 form-group">
+                                <select class="form-control" name="tecnico" required>
+                                    <option value="" selected="selected">Selecione o técnico</option>
+                                    {% for tecnico in empresa.tecnicos.all %}
+                                        <option value="{{ tecnico.pk }}">{{ tecnico }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <select class="form-control" name="equipamento" required>
+                                    <option value="" selected="selected">Selecione o equipamento</option>
+                                    {% for equipamento in equipamentos %}
+                                        <option value="{{ equipamento.pk }}">{{ equipamento }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-12 form-group text-right" style="margin-top: 5px;">
+                                <button class="btn btn-sm btn-primary">Gerar Plano de Manutenção</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="box-footer">
+                    <p>O gerador de plano de manutenção anual gera o pmoc a partir da data informada de acordo com a periodicidade das operação. É necessário informar o equipamento é a data inicial para gerar o pmoc dentro do ano.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

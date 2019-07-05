@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+
+{% block title %}
+    Excluír Intervalo de Manutenção | {{ block.super }}
+{% endblock %}
+
+{% block content %}
+<section class="content-header">
+    <h1>Excluír Intervalo de Manutenção</h1>
+    <ol class="breadcrumb">
+        <li><a href="{% url 'core:dashboard' %}">Dashboard</a></li>
+        <li>
+            <a href="{% url 'empresa:manutencao_intervalo_list' object.empresa.pk %}">
+                Intervalos Entre Manutenções
+            </a>
+        </li>
+        <li class="active">Excluír</li>
+    </ol>
+</section>
+<section class="content">
+    {% include 'form_delete.html' %}
+</section>
+{% endblock %}

@@ -1,0 +1,344 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block title %}
+    Cadastro de Ambiente | {{ block.super }}
+{% endblock %}
+
+{% block content %}
+<section class="content-header">
+    <h1>Atualizar Registro de Manutenção | {{ cliente }}</h1>
+    <ol class="breadcrumb">
+        <li>
+            <a href="{% url 'empresa:cliente:cliente_dashboard' cliente.empresa.pk cliente.pk %}">
+                Dashboard
+            </a>
+        </li>
+        <li><a href="{% url 'empresa:cliente:registro_manutencao_list' empresa.pk cliente.pk %}">Registros de Manutenção</a></li>
+        <li class="active">Cadastro</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            {% include 'alert.html' %}
+        </div>
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <a class="btn btn-sm btn-info" href="{% url 'empresa:cliente:registro_manutencao_list' empresa.pk cliente.pk %}">
+                        <i class="fa fa-reply" aria-hidden="true"></i> 
+                        Voltar
+                    </a>
+                </div>
+                <div class="box-body table-responsive">
+                    <div class="nav-tabs-custom">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#tab_1" data-toggle="tab" aria-expanded="true">Manutenção</a>
+                            </li>
+                            <li class="">
+                                <a href="#tab_2" data-toggle="tab" aria-expanded="false">Operações</a>
+                            </li>
+                            <li class="">
+                                <a href="#tab_3" data-toggle="tab" aria-expanded="false">Medições</a>
+                            </li>
+                            <li class="">
+                                <a href="#tab_4" data-toggle="tab" aria-expanded="false">Anexos</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tab_1">
+                                <form class="form" method="post">{% csrf_token %}
+                                    <fieldset>
+                                        <div class="col-md-10 form-group{% if form.equipamento.errors %} has-error{% endif %}">
+                                            <label for="{{ form.equipamento.auto_id }}" class="control-label">
+                                                {{ form.equipamento.label }}
+                                            </label>
+                                            {% render_field form.equipamento class='select2 form-control' %}
+                                            {% for error in form.equipamento.errors %}
+                                                <span class="help-block">{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="col-md-10 form-group{% if form.tecnico.errors %} has-error{% endif %}">
+                                            <label for="{{ form.tecnico.auto_id }}" class="control-label">
+                                                {{ form.tecnico.label }}
+                                            </label>
+                                            {% render_field form.tecnico class='select2 form-control' %}
+                                            {% for error in form.tecnico.errors %}
+                                                <span class="help-block">{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="col-md-3 form-group{% if form.tipo.errors %} has-error{% endif %}">
+                                            <label for="{{ form.tipo.auto_id }}" class="control-label">
+                                                {{ form.tipo.label }}
+                                            </label>
+                                            {% render_field form.tipo class='form-control' %}
+                                            {% for error in form.tipo.errors %}
+                                                <span class="help-block">{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="col-md-3 form-group{% if form.data_prevista.errors %} has-error{% endif %}">
+                                            <label for="{{ form.data_prevista.auto_id }}" class="control-label">
+                                                {{ form.data_prevista.label }}
+                                            </label>
+                                            {% render_field form.data_prevista class='form-control datepicker' %}
+                                            {% for error in form.data_prevista.errors %}
+                                                <span class="help-block">{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="col-md-4 form-group{% if form.data_execucao.errors %} has-error{% endif %}">
+                                            <label for="{{ form.data_execucao.auto_id }}" class="control-label">
+                                                {{ form.data_execucao.label }}
+                                            </label>
+                                            {% render_field form.data_execucao class='form-control datepicker' %}
+                                            {% for error in form.data_execucao.errors %}
+                                                <span class="help-block">{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    </fieldset>
+                                    <fieldset>
+                                        <div class="col-md-12 form-group{% if form.observacao.errors %} has-error{% endif %}">
+                                            <label for="{{ form.observacao.auto_id }}" class="control-label">
+                                                {{ form.observacao.label }}
+                                            </label>
+                                            {% render_field form.observacao class='form-control' %}
+                                            {% for error in form.observacao.errors %}
+                                                <span class="help-block">{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    </fieldset>
+                                    <fieldset>
+                                        <div class="col-md-12 text-right">
+                                            <button class="btn btn-primary" type="submit">
+                                                <i class="fa fa-floppy-o" aria-hidden="true"></i> 
+                                                Salvar
+                                            </button>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                            <!-- /.tab-pane -->
+                            <div class="tab-pane" id="tab_2">
+                                <div id="app-operacao">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label class="control-label">Selecione o grupo de operações</label>
+                                            <select class="form-control" @change="getOperacoes" v-model="grupo">
+                                                <option disabled="disabled" selected="selected">Selecione o grupo de operações</option>
+                                                <option v-for="g in grupo_operacao" :value="[[ g.pk ]]" >[[ g.nome ]]</option>
+                                            </select>
+                                        </div>
+                                        <div v-if="operacoes.length > 0" class="col-md-12">
+                                            <table class="table table-bordered">
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Intervalo</th>
+                                                    <th>Operação</th>
+                                                </tr>
+                                                <tr v-for="o in operacoes">
+                                                    <td><input type="checkbox" :value="o.pk" id="checkedOperacoes" v-model="checkedOperacoes"></td>
+                                                    <td>[[ o.intervalo ]]</td>
+                                                    <td>[[ o.nome ]]</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div v-if="checkedOperacoes.length > 0" class="col-md-12 text-right">
+                                            <button class="btn btn-sm btn-info" v-on:click="saveOperacoes">Adicionar Operações</button>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <th style="width: 10px">#</th>
+                                                <th>Grupo</th>
+                                                <th>Intervalo</th>
+                                                <th>Operação</th>
+                                                <th></th>
+                                            </tr>
+                                            <tr v-for="mo in manutencaoOperacoes">
+                                                <td>[[ mo.codigo ]]</td>
+                                                <td>[[ mo.grupo ]]</td>
+                                                <td>[[ mo.intervalo ]]</td>
+                                                <td>[[ mo.nome ]]</td>
+                                                <td class="text-right">
+                                                    <button class="btn btn-xs btn-danger"  v-on:click="deleteOperacoes(mo.pk)">
+                                                        <i class="fa fa-trash" aria-hidden="true"> </i>
+                                                        Remover
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- /.tab-pane -->
+                            <div class="tab-pane" id="tab_3">
+                                <div id="app-medicao">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="control-label">Pressão Baixa</label>
+                                            <input v-model="item.pressao_baixa" type="text" class="form-control">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="control-label">Pressão Alta</label>
+                                            <input v-model="item.pressao_alta" type="text" class="form-control">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="control-label">Temp. Insuflamento °C</label>
+                                            <input v-model="item.temperatura_insuflamento" type="text" class="form-control">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="control-label">Temp. Retorno °C</label>
+                                            <input v-model="item.temperatura_retorno" type="text" class="form-control">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="control-label">Tensão</label>
+                                            <input v-model="item.tensao" type="text" class="form-control">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="control-label">Corrente</label>
+                                            <input v-model="item.corrente" type="text" class="form-control">
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="control-label">Observação</label>
+                                            <textarea v-model="item.observacao" class="form-control"></textarea>
+                                        </div>
+                                        <div class="col-md-12 text-right" style="margin-top: 20px; margin-bottom: 20px;">
+                                            <button class="btn btn-sm btn-warning" type="button" v-on:click="refreshMedicao">
+                                                <i class="fa fa-refresh" aria-hidden="true"></i>
+                                                Limpar
+                                            </button>
+                                            <button class="btn btn-sm btn-primary" type="button" v-on:click="saveMedicao">
+                                                <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                                                Salvar
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <tbody>
+                                                <tr>
+                                                    <th style="width: 10px">#</th>
+                                                    <th>Pressão Baixa</th>
+                                                    <th>Pressão Alta</th>
+                                                    <th>Temp. Insuflamento °C</th>
+                                                    <th>Temp. Retorno °C</th>
+                                                    <th>Tensão</th>
+                                                    <th>Corrente</th>
+                                                    <th>Observação</th>
+                                                    <th></th>
+                                                </tr>
+                                                <tr v-for="(item, index) in items">
+                                                    <td>[[ index + 1 ]]</td>
+                                                    <td>[[ item.pressao_baixa ]]</td>
+                                                    <td>[[ item.pressao_alta ]]</td>
+                                                    <td>[[ item.temperatura_insuflamento ]]</td>
+                                                    <td>[[ item.temperatura_retorno ]]</td>
+                                                    <td>[[ item.tensao ]]</td>
+                                                    <td>[[ item.corrente ]]</td>
+                                                    <td>[[ item.observacao ]]</td>
+                                                    <td class="text-right">
+                                                        <button type="button" class="btn btn-xs btn-info" v-on:click="getMedicoes(item.pk)">
+                                                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                            Editar
+                                                        </button>
+                                                        <button type="button" class="btn btn-xs btn-danger" v-on:click="deleteMedicoes(item.pk)">
+                                                            <i class="fa fa-trash" aria-hidden="true"> </i>
+                                                            Excluír
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.tab-pane -->
+                            <div class="tab-pane" id="tab_4">
+                                <div class="row" id="app-anexo">
+                                    <div class="col col-md-7 form-group">
+                                        <label class="control-label">Descrição</label>
+                                        <input class="form-control" type="text" v-model="nome">
+                                    </div>
+                                    <div class="col col-md-7 form-group">
+                                        <label class="control-label">
+                                            Selecione o Arquivo 
+                                            <small class="text-danger">Extensões: word, excel, pdf, txt, gif, jpeg e png. Max. 20MB</small>
+                                        </label>
+                                        <input class="form-control" type="file" @change="processAnexo($event)" ref="fileInput">
+                                    </div>
+                                    <div class="col col-md-7" v-bind:class="{ hidden: progress == 0 }">
+                                        <small>Carregando anexo ...</small>
+                                        <div class="progress progress-sm active">
+                                            <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" :aria-valuenow="progress" aria-valuemin="0" aria-valuemax="100" v-bind:style="{ width: progress + '%'}">
+                                                <span class="sr-only">[[ progress ]]% Complete</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col col-md-7 form-group text-right">
+                                        <button class="btn btn-sm btn-primary" v-on:click="uploadAnexo" v-bind:class="{ disabled: progress > 0 }">
+                                            <i class="fa fa-floppy-o" aria-hidden="true"></i> 
+                                            Salvar Anexo
+                                        </button>
+                                    </div>
+                                    <div class="col col-md-12 form-group table-responsive">
+                                        <table class="table table-bordered table-condensed">
+                                            <tr>
+                                                <th>Anexos <small class="text-danger">(No máximo 5 anexos)</small></th>
+                                                <th></th>
+                                            </tr>
+                                            <tr v-for="f in files">
+                                               <td>
+                                                    <a v-bind:href="f.anexo" target="_blank">
+                                                        [[ f.nome ]]    
+                                                    </a>
+                                                    
+                                               </td>
+                                               <td class="text-right">
+                                                   <button class="btn btn-sm btn-danger" v-on:click="deleteAnexo(f.pk)">
+                                                        <i class="fa fa-trash" aria-hidden="true"></i> 
+                                                        Excluír
+                                                   </button>
+                                               </td> 
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.tab-content -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+
+{% block inlinescript %}
+    <script src="{% static 'js/vue.min.js' %}"></script>
+    <script src="{% static 'js/manutencao.min.js' %}"></script>
+    <script type="text/javascript">
+        appOperacao.empresa = "{{ empresa.pk }}";
+        appOperacao.cliente = "{{ cliente.pk }}";
+        appOperacao.manutencao = "{{ object.pk }}";
+        
+        appMedicao.empresa = "{{ empresa.pk }}";
+        appMedicao.cliente = "{{ cliente.pk }}";
+        appMedicao.manutencao = "{{ object.pk }}";
+
+        appAnexo.empresa = "{{ empresa.pk }}";
+        appAnexo.cliente = "{{ cliente.pk }}";
+        appAnexo.manutencao = "{{ object.pk }}";
+        
+        appMedicao.allMedicoes();
+        appOperacao.grupoOperacao();
+        appOperacao.allOperacoes();
+        appAnexo.listAnexo();
+    </script>
+{% endblock %}

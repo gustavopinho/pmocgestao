@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+
+{% block title %}
+    Excluír Responsável Técnico | {{ block.super }}
+{% endblock %}
+
+{% block content %}
+<section class="content-header">
+    <h1>Excluír Responsável Técnico</h1>
+    <ol class="breadcrumb">
+        <li><a href="{% url 'core:dashboard' %}">Dashboard</a></li>
+        <li>
+            <a href="{% url 'empresa:responsavel_list' object.empresa.pk %}">
+                Responsáveis Técnicos
+            </a>
+        </li>
+        <li class="active">Excluír</li>
+    </ol>
+</section>
+<section class="content">
+    {% include 'form_delete.html' %}
+</section>
+{% endblock %}

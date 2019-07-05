@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block title %}
+    Cadastro de Equipamento | {{ block.super }}
+{% endblock %}
+
+{% block content %}
+<section class="content-header">
+    <h1>Cadastrar Equipamento | {{ cliente }}</h1>
+    <ol class="breadcrumb">
+        <li>
+            <a href="{% url 'empresa:cliente:cliente_dashboard' cliente.empresa.pk cliente.pk %}">
+                Dashboard
+            </a>
+        </li>
+        <li><a href="{% url 'empresa:cliente:equipamento_list' empresa.pk cliente.pk %}">Equipamentos</a></li>
+        <li class="active">Cadastro</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            {% include 'alert.html' %}
+        </div>
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <a class="btn btn-sm btn-info" href="{% url 'empresa:cliente:equipamento_list' empresa.pk cliente.pk %}">
+                        <i class="fa fa-reply" aria-hidden="true"></i> 
+                        Voltar
+                    </a>
+                </div>
+                <div class="box-body table-responsive">
+                    <div class="nav-tabs-custom">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#tab_1" data-toggle="tab" aria-expanded="true">Equipamento</a>
+                            </li>
+                            <li class="">
+                                <a href="#tab_2" data-toggle="tab" aria-expanded="false">Anexos</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tab_1">
+                                <form class="form" enctype="multipart/form-data" method="post">{% csrf_token %}
+                                    <div class="col-md-7 form-group{% if form.grupo.errors %} has-error{% endif %}">
+                                        <label for="{{ form.grupo.auto_id }}" class="control-label">
+                                            {{ form.grupo.label }}
+                                        </label>
+                                        {% render_field form.grupo class='form-control' %}
+                                        {% for error in form.grupo.errors %}
+                                            <span class="help-block">{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="col-md-7 form-group{% if form.ambiente.errors %} has-error{% endif %}">
+                                        <label for="{{ form.ambiente.auto_id }}" class="control-label">
+                                            {{ form.ambiente.label }}
+                                        </label>
+                                        {% render_field form.ambiente class='form-control' %}
+                                        {% for error in form.ambiente.errors %}
+                                            <span class="help-block">{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="col-md-7 form-group{% if form.nome.errors %} has-error{% endif %}">
+                                        <label for="{{ form.nome.auto_id }}" class="control-label">
+                                            {{ form.nome.label }}
+                                        </label>
+                                        {% render_field form.nome class='form-control' %}
+                                        {% for error in form.nome.errors %}
+                                            <span class="help-block">{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="col-md-7 form-group{% if form.patrimonio.errors %} has-error{% endif %}">
+                                        <label for="{{ form.identificacao.auto_id }}" class="control-label">
+                                            {{ form.identificacao.label }}
+                                        </label>
+                                        {% render_field form.identificacao class='form-control' %}
+                                        {% for error in form.identificacao.errors %}
+                                            <span class="help-block">{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="col-md-7 form-group{% if form.fabricante.errors %} has-error{% endif %}">
+                                        <label for="{{ form.fabricante.auto_id }}" class="control-label">
+                                            {{ form.fabricante.label }}
+                                        </label>
+                                        {% render_field form.fabricante class='form-control' %}
+                                        {% for error in form.fabricante.errors %}
+                                            <span class="help-block">{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="col-md-7 form-group{% if form.capacidade.errors %} has-error{% endif %}">
+                                        <label for="{{ form.capacidade.auto_id }}" class="control-label">
+                                            {{ form.capacidade.label }}
+                                        </label>
+                                        {% render_field form.capacidade class='form-control' %}
+                                        {% for error in form.capacidade.errors %}
+                                            <span class="help-block">{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="col-md-7 form-group{% if form.data_instalacao.errors %} has-error{% endif %}">
+                                        <label for="{{ form.data_instalacao.auto_id }}" class="control-label">
+                                            {{ form.data_instalacao.label }}
+                                        </label>
+                                        {% render_field form.data_instalacao class='form-control datepicker' %}
+                                        {% for error in form.data_instalacao.errors %}
+                                            <span class="help-block">{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="col-md-7 form-group{% if form.ativo.errors %} has-error{% endif %}">
+                                        <div class="checkbox">
+                                            <label for="{{ form.ativo.auto_id }}" class="control-label">
+                                                {{ form.ativo.label }}
+                                                {% render_field form.ativo class='checkbox' %}
+                                            </label>
+                                        </div>
+                                        {% for error in form.ativo.errors %}
+                                            <span class="help-block">{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="col-md-7 form-group{% if form.data_desativado.errors %} has-error{% endif %}">
+                                        <label for="{{ form.data_desativado.auto_id }}" class="control-label">
+                                            {{ form.data_desativado.label }}
+                                        </label>
+                                        {% render_field form.data_desativado class='form-control datepicker' %}
+                                        {% for error in form.data_desativado.errors %}
+                                            <span class="help-block">{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="col-md-7 form-group{% if form.observacao.errors %} has-error{% endif %}">
+                                        <label for="{{ form.observacao.auto_id }}" class="control-label">
+                                            {{ form.observacao.label }}
+                                        </label>
+                                        {% render_field form.observacao class='form-control' %}
+                                        {% for error in form.observacao.errors %}
+                                            <span class="help-block">{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <button class="btn btn-primary" type="submit">
+                                            <i class="fa fa-floppy-o" aria-hidden="true"></i> 
+                                            Salvar
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tab-pane" id="tab_2">
+                                <div class="row" id="app-anexo">
+                                    <div class="col col-md-7 form-group">
+                                        <label class="control-label">Descrição</label>
+                                        <input class="form-control" type="text" v-model="nome">
+                                    </div>
+                                    <div class="col col-md-7 form-group">
+                                        <label class="control-label">
+                                            Selecione o Arquivo 
+                                            <small class="text-danger">Extensões: word, excel, pdf, txt, gif, jpeg e png. Max. 20MB</small>
+                                        </label>
+                                        <input class="form-control" type="file" @change="processAnexo($event)" ref="fileInput">
+                                    </div>
+                                    <div class="col col-md-7" v-bind:class="{ hidden: progress == 0 }">
+                                        <small>Carregando anexo ...</small>
+                                        <div class="progress progress-sm active">
+                                            <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" :aria-valuenow="progress" aria-valuemin="0" aria-valuemax="100" v-bind:style="{ width: progress + '%'}">
+                                                <span class="sr-only">[[ progress ]]% Complete</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col col-md-7 form-group text-right">
+                                        <button class="btn btn-sm btn-primary" v-on:click="uploadAnexo" v-bind:class="{ disabled: progress > 0 }">
+                                            <i class="fa fa-floppy-o" aria-hidden="true"></i> 
+                                            Salvar Anexo
+                                        </button>
+                                    </div>
+                                    <div class="col col-md-12 form-group table-responsive">
+                                        <table class="table table-bordered table-condensed">
+                                            <tr>
+                                                <th>Anexos <small class="text-danger">(No máximo 5 anexos)</small></th>
+                                                <th></th>
+                                            </tr>
+                                            <tr v-for="f in files">
+                                               <td>
+                                                    <a v-bind:href="f.anexo" target="_blank">
+                                                        [[ f.nome ]]    
+                                                    </a>
+                                                    
+                                               </td>
+                                               <td class="text-right">
+                                                   <button class="btn btn-sm btn-danger" v-on:click="deleteAnexo(f.pk)">
+                                                        <i class="fa fa-trash" aria-hidden="true"></i> 
+                                                        Excluír
+                                                   </button>
+                                               </td> 
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+{% block inlinescript %}
+    <script src="{% static 'js/vue.min.js' %}"></script>
+    <script src="{% static 'js/equipamento.min.js' %}"></script>
+    <script type="text/javascript">
+        appAnexo.empresa = "{{ empresa.pk }}";
+        appAnexo.cliente = "{{ cliente.pk }}";
+        appAnexo.equipamento = "{{ object.pk }}";
+        appAnexo.listAnexo();
+    </script>
+{% endblock %}

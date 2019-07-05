@@ -1,0 +1,203 @@
+<li class="treeview active">
+    <a href="#">
+        <i class="fa fa-building" aria-hidden="true"></i>
+        <span>Empresas</span>
+        <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+        </span>
+    </a>
+    <ul class="treeview-menu">
+        <li class="treeview menu-open">
+            {% for empresa in user.empresas.all %}
+            <a href="#"><i class="fa fa-building-o"></i> {{ empresa.empresa }}
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu" style="display: block;">
+                {% if perms.empresa.view_empresa %}
+                <li>
+                    <a href="{% url 'empresa:empresa_dashboard' empresa.empresa.pk %}">
+                        <i class="fa fa-tachometer"></i>
+                        <span> Dashboard</span>
+                    </a>
+                </li>
+                {% endif %}
+                {% if perms.empresa.change_empresa %}
+                <li>
+                    <a href="{% url 'empresa:empresa_update' empresa.empresa.pk %}">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar
+                    </a>
+                </li>
+                {% endif %}
+                {% if perms.accounts.view_userempresa %}
+                <li>
+                    <a href="{% url 'empresa:user_list' empresa.empresa.pk %}">
+                        <i class="fa fa-user-o"></i> Usuários
+                    </a>
+                </li>
+                {% endif %}
+                {% if perms.empresa.view_responsavel %}
+                <li>
+                    <a href="{% url 'empresa:responsavel_list' empresa.empresa.pk %}">
+                        <i class="fa fa-user-o"></i> Responsáveis Técnico
+                    </a>
+                </li>
+                {% endif %}
+                {% if perms.empresa.view_tecnico %}
+                <li>
+                    <a href="{% url 'empresa:tecnico_list' empresa.empresa.pk %}">
+                        <i class="fa fa-user-o"></i> Técnicos
+                    </a>
+                </li>
+                {% endif %}
+                {% if perms.empresa.view_equipamentogrupo %}
+                <li>
+                    <a href="{% url 'empresa:equipamento_grupo_list' empresa.empresa.id  %}">
+                        <i class="fa fa-square-o"></i> Grupo de Equipamentos
+                    </a>
+                </li>
+                {% endif %}
+                {% if perms.empresa.view_manutencaotipo %}
+                <li>
+                    <a href="{% url 'empresa:manutencao_tipo_list' empresa.empresa.id  %}">
+                        <i class="fa fa-cog"></i> Tipo de Manutenção
+                    </a>
+                </li>
+                {% endif %}
+                {% if perms.empresa.view_manutencaointervalo %}
+                <li>
+                    <a href="{% url 'empresa:manutencao_intervalo_list' empresa.empresa.id  %}">
+                        <i class="fa fa-clock-o"></i> Intervalo de Manutenções
+                    </a>
+                </li>
+                {% endif %}
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-users"></i> Clientes
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        {% for cliente in empresa.empresa.clientes.all %}
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-university" aria-hidden="true"></i>
+                                {{ cliente.nome }}
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li>
+                                    <a href="{% url 'empresa:cliente:cliente_dashboard' empresa.empresa.pk cliente.pk  %}">
+                                        <i class="fa fa-tachometer"></i>
+                                        <span> Dashboard</span>
+                                    </a>
+                                </li>
+                                {% if perms.cliente.change_cliente %}
+                                <li>
+                                    <a href="{% url 'empresa:cliente:cliente_update' empresa.empresa.pk cliente.pk %}">
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                        Editar
+                                    </a>
+                                </li>
+                                {% endif %}
+                                {% if perms.cliente.view_unidade %}
+                                <li>
+                                    <a href="{% url 'empresa:cliente:unidade_list' empresa.empresa.pk cliente.pk %}">
+                                        <i class="fa fa-university" aria-hidden="true"></i>
+                                        Unidades
+                                    </a>
+                                </li>
+                                {% endif %}
+                                {% if perms.cliente.view_atividade %}
+                                <li>
+                                    <a href="{% url 'empresa:cliente:atividade_list' empresa.empresa.pk cliente.pk %}">
+                                        <i class="fa fa-sitemap" aria-hidden="true"></i>
+                                        Departamentos
+                                    </a>
+                                </li>
+                                {% endif %}
+                                {% if perms.cliente.view_ambiente %}
+                                <li>
+                                    <a href="{% url 'empresa:cliente:ambiente_list' empresa.empresa.pk cliente.pk %}">
+                                        <i class="fa fa-square" aria-hidden="true"></i>
+                                        Ambientes
+                                    </a>
+                                </li>
+                                {% endif %}
+                                {% if perms.cliente.view_equipamento %}
+                                <li>
+                                    <a href="{% url 'empresa:cliente:equipamento_list' empresa.empresa.pk cliente.pk %}">
+                                        <i class="fa fa-television" aria-hidden="true"></i>
+                                        Equipamentos
+                                    </a>
+                                </li>
+                                {% endif %}
+                                {% if perms.cliente.view_operacaogrupo %}
+                                <li>
+                                    <a href="{% url 'empresa:cliente:operacao_grupo_list' empresa.empresa.pk cliente.pk %}">
+                                        <i class="fa fa-wrench" aria-hidden="true"></i>
+                                        Grupo de Operações
+                                    </a>
+                                </li>
+                                {% endif %}
+                                {% if perms.cliente.view_operacao %}
+                                <li>
+                                    <a href="{% url 'empresa:cliente:operacao_list' empresa.empresa.pk cliente.pk %}">
+                                        <i class="fa fa-wrench" aria-hidden="true"></i>
+                                        Operações
+                                    </a>
+                                </li>
+                                {% endif %}
+                                {% if perms.cliente.view_registromanutencao %}
+                                <li>
+                                    <a href="{% url 'empresa:cliente:registro_manutencao_list' empresa.empresa.pk cliente.pk %}">
+                                        <i class="fa fa-wrench" aria-hidden="true"></i>
+                                        Manutenções
+                                    </a>
+                                </li>
+                                {% endif %}
+                                {% if perms.cliente.view_registromanutencao %}
+                                <li>
+                                    <a href="{% url 'empresa:cliente:relatorios' empresa.empresa.pk cliente.pk %}">
+                                        <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                        Relatório PMOC
+                                    </a>
+                                </li>
+                                {% endif %}
+                                {% if perms.cliente.view_anexo %}
+                                <li>
+                                    <a href="{% url 'empresa:cliente:anexo_list' empresa.empresa.pk cliente.pk %}">
+                                        <i class="fa fa-cloud-download" aria-hidden="true"></i>
+                                        Anexos
+                                    </a>
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </li>
+                        {% endfor %}
+
+                        {% if perms.cliente.add_cliente %}
+                        <li>
+                            <a href="{% url 'empresa:cliente:cliente_create' empresa.empresa.id  %}">
+                                <i class="fa fa-plus"></i> Adicionar Cliente
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </li>
+            </ul>
+            {% endfor %}
+        </li>
+        <li>
+            {% if perms.empresa.add_empresa %}
+            <a href="{% url 'empresa:empresa_create' %}">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                Adicionar Empresa
+            </a>
+            {% endif %}
+        </li>
+    </ul>
+</li>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% load staticfiles %}
+    {% load widget_tweaks %}
+    <!-- Standard Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Site Properties -->
+    <title> {% block title %}PMOC GESTÃO{% endblock %}</title>
+    <link rel=stylesheet type=text/css href="{% static 'css/vendor.min.css' %}">
+</head>
+
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="/">
+                <img src="{% static 'img/pmocgestao.png' %}" style="max-width: 250px;">
+            </a>
+        </div>
+        <div class="login-box-body">
+            {% block content %}
+            <form method="post">
+                {% csrf_token %}
+                <p class="text-center">LOGIN</p>
+                {% if messages %}
+                    {% for message in messages %}
+                        <p>
+                            {{ message }}
+                        </p>
+                    {% endfor %}
+                {% endif %}
+                <div class="form-group has-feedback">
+                    {% render_field form.username class="form-control" placeholder="Usuário" %} {% for error in form.username.errors %}
+                    <span class="help-block">{{ error }}</span> {% endfor %}
+                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    {% render_field form.password class="form-control" placeholder="Senha"%} {% for error in form.password.errors %}
+                    <span class="help-block">{{ error }}</span> {% endfor %}
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">Entrar</button>
+                    </div>
+                </div>
+            </form>
+            <br>
+            <a href="{% url 'password_reset' %}">Recuperar minha senha</a>
+            {% endblock %}
+        </div>
+    </div>
+    <script src="{% static 'js/vendor.min.js' %}"></script>
+</body>
+
+</html>

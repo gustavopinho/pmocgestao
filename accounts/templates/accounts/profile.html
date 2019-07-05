@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+
+{% block title %}
+    Perfil {{ block.super }}
+{% endblock %}
+
+{% block content %}
+<section class="content-header">
+    <h1>{{ user }}</h1>
+    <ol class="breadcrumb">
+        <li><a href="{% url 'core:dashboard' %}">Dashboard</a></li>
+        <li class="active">Perfil</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            {% include 'alert.html' %}
+        </div>
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <a class="btn btn-sm btn-info" href="{% url 'accounts:update_password' %}">
+                        <i class="fa fa-key" aria-hidden="true"></i> 
+                        Alterar Senha
+                    </a>
+                </div>
+                <div class="box-body table-responsive">
+                    <form class="form" method="post">{% csrf_token %}
+                        {% for field in form %}
+                        <div class="col-md-6 form-group{% if field.errors %} has-error{% endif %}">
+                            <label for="{{ field.auto_id }}" class="control-label">{{ field.label }}</label>
+                            {% render_field field class='form-control' %}
+                            {% for error in field.errors %}
+                                <span class="help-block">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                        <div class="col-md-12 text-right">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fa fa-floppy-o" aria-hidden="true"></i> 
+                                Salvar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

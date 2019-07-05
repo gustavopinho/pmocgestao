@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+
+{% block title %}
+    Responsável Técnico | {{ block.super }}
+{% endblock %}
+
+{% block content %}
+<section class="content-header">
+    <h1>Gerar Acesso</h1>
+    <ol class="breadcrumb">
+        <li><a href="{% url 'core:dashboard' %}">Dashboard</a></li>
+        <li><a href="{% url 'empresa:user_list' empresa.pk %}">Usuários</a></li>
+        <li class="active">Gerar Acesso</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            {% include 'alert.html' %}
+        </div>
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <a class="btn btn-sm btn-info" href="{% url 'empresa:user_list' empresa.pk %}">
+                        <i class="fa fa-reply" aria-hidden="true"></i> 
+                        Voltar
+                    </a>
+                </div>
+                <div class="box-body">
+                    <form class="form" method="post">{% csrf_token %}
+                        <div class="col-md-7 form-group{% if form.acesso.errors %} has-error{% endif %}">
+                            <label for="{{ form.acesso.auto_id }}" class="control-label">
+                                {{ form.acesso.label }}
+                            </label>
+                            {% render_field form.acesso class='form-control' %}
+                            {% for error in form.acesso.errors %}
+                                <span class="help-block">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-7 text-right">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fa fa-floppy-o" aria-hidden="true"></i> 
+                                Salvar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

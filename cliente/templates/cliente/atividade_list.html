@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+{% load pagination %}
+{% load numbering %}
+
+{% block title %}
+    Cliente Departamentos | {{ block.super }}
+{% endblock %}
+
+{% block content %}
+<section class="content-header">
+    <h1>Departamentos | {{ cliente }}</h1>
+    <ol class="breadcrumb">
+        <li><a href="{% url 'empresa:cliente:cliente_dashboard' cliente.empresa.pk cliente.pk %}">Dashboard</a></li>
+        <li class="active">Departamentos</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            {% include 'alert.html' %}
+        </div>
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">
+                        {% if perms.cliente.add_atividade %}
+                        <a class="btn btn-sm btn-success" href="{% url 'empresa:cliente:atividade_create' empresa.pk cliente.pk %}" >
+                            <i class="fa fa-plus-circle" aria-hidden="true"></i> 
+                            Novo
+                        </a>
+                        {% endif %}
+                    </h3>
+                    {% include 'search.html' %}
+                </div>
+                <div class="box-body table-responsive">
+                    <div class="table-responsive">
+                        <table class="table table-condensed table-hover">
+                            <tr>
+                                <th>#</th>
+                                <th>Nome</th>
+                                <th>Criado em</th>
+                                <th>Atualizado em</th>
+                                <th></th>
+                            </tr>
+                            {% for obj in page_obj %}
+                            <tr>
+                                <td>
+                                    {% numbering page_obj.number forloop.counter0 20 %}
+                                </td>
+                                <td>{{ obj.nome }}</td>
+                                <td>{{ obj.created }}</td>
+                                <td>{{ obj.modified }}</td>
+                                <td class="text-right">
+                                    {% if perms.cliente.change_atividade %}
+                                    <a href="{% url 'empresa:cliente:atividade_update' empresa.pk cliente.pk obj.pk %}" class="btn btn-sm btn-info">
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 
+                                        Editar
+                                    </a>
+                                    {% endif %}
+                                    {% if perms.cliente.delete_atividade %}
+                                    <a href="{% url 'empresa:cliente:atividade_delete' empresa.pk cliente.pk obj.pk %}" class="btn btn-sm btn-danger">
+                                        <i class="fa fa-trash-o" aria-hidden="true"></i> 
+                                        Excluir
+                                    </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    <div class="box-footer">
+                        {% pagination request paginator page_obj %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

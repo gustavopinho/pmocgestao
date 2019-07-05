@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}
+    Dashboard - {{ empresa.nome }} |{{ block.super }}
+{% endblock %}
+
+{% block content %}
+<section class="content-header">
+    <h1>Dashboard - {{ empresa.nome }}</h1>
+    <ol class="breadcrumb">
+        <li class="active">{{ empresa.nome }}</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col col-md-4">
+            <div class="info-box">
+                <span class="info-box-icon bg-aqua">
+                    <i class="fa fa-television" aria-hidden="true"></i>
+                </span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Total de Equipamentos</span>
+                    <span class="info-box-number">
+                        {{ empresa.get_qtd_equipamentos }}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col col-md-4">
+            <div class="info-box">
+                <span class="info-box-icon bg-green">
+                    <i class="fa fa-television" aria-hidden="true"></i>
+                </span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Equipamentos Ativos</span>
+                    <span class="info-box-number">
+                        {{ empresa.get_qtd_equipamentos_ativos }}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col col-md-4">
+            <div class="info-box">
+                <span class="info-box-icon bg-red">
+                    <i class="fa fa-television" aria-hidden="true"></i>
+                </span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Equipamentos Desativados</span>
+                    <span class="info-box-number">
+                        {{ empresa.get_qtd_equipamentos_desativados }}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            {% include 'alert.html' %}
+        </div>
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Clientes</h3>
+                </div>
+                <div class="box-body table-responsive">
+                    <table class="table table-bordered table-condensed">
+                        <tr>
+                            <th>Cliente</th>
+                            <th class="text-center">Unidades</th>
+                            <th class="text-center">Ambientes</th>
+                            <th class="text-center">Equipamentos</th>
+                            <th class="text-center">M. Executadas</th>
+                            <th class="text-center">M. Agendadas</th>
+                        </tr>
+                        {% for cliente in empresa.clientes.all %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'empresa:cliente:cliente_dashboard' cliente.empresa.pk cliente.pk  %}">
+                                    {{ cliente.nome }}
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <a href="{% url 'empresa:cliente:unidade_list' cliente.empresa.pk cliente.pk %}">
+                                    {{ cliente.get_qtd_unidades }}
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <a href="{% url 'empresa:cliente:ambiente_list' cliente.empresa.pk cliente.pk %}">
+                                    {{ cliente.get_qtd_ambientes }}
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <a href="{% url 'empresa:cliente:equipamento_list' cliente.empresa.pk cliente.pk %}">
+                                     {{ cliente.get_qtd_equipamentos }}
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <a href="{% url 'empresa:cliente:registro_manutencao_list' cliente.empresa.pk cliente.pk %}?executado=1">
+                                    {{ cliente.get_qtd_manutencoes_executadas }}
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <a href="{% url 'empresa:cliente:registro_manutencao_list' cliente.empresa.pk cliente.pk %}?executado=2">
+                                    {{ cliente.get_qtd_manutencoes_agendadas }}
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                   
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Manutenções</h3>
+                </div>
+                <div class="box-body">
+                    <div class="row" id="app-manutencoes">
+                        <div class="col col-md-12">
+                            <label class="label-control">Selecione o ano</label>
+                            <select class="form-control" v-model="ano" @change="refresh">
+                                {% for ano in empresa.get_ano_manutencoes %}
+                                <option :value="{{ ano }}">{{ ano }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col col-md-4">
+                            <h3>Manutençõe agendadas e executadas [[ ano ]]</h3>
+                            <pie-chart :chart-data="chartDataAno"></pie-chart>
+                        </div>
+                        <div class="col col-md-8">
+                            <h3>Manutençõe agendadas e executadas [[ ano ]] por mês</h3>
+                            <bar-chart :chart-data="chartDataMes" ></bar-chart>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    
+{% endblock %}
+
+{% block inlinescript %}
+    <script src="{% static 'js/vue.min.js' %}"></script>
+    <script src="{% static 'js/empresa-dashboard.min.js' %}"></script>
+    <script type="text/javascript">
+        appManutencoes.empresa = {{ empresa.pk }};
+        appManutencoes.getManutencaoMes();
+        appManutencoes.getManutencaoAno();
+    </script>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    403 Forbidden - |{{ block.super }}
+{% endblock %}
+
+{% block content %}
+<section class="content-header">
+    <h1>403 Forbidden</h1>
+    <ol class="breadcrumb">
+        <li><a href="{% url 'core:dashboard' %}">Dashboard</a></li>
+        <li class="active">403 Forbidden</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            {% include 'alert.html' %}
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="error-page">
+            <h2 class="headline text-yellow">403</h2>
+            <div class="error-content">
+                <h3><i class="fa fa-warning text-yellow"></i> 403 Forbidden - Permissão negada!</h3>
+                <p>
+                    Você não tem permissão para acessar esse recurso.
+                    Você pode <a href="{% url 'core:dashboard' %}">retornar para o dashboard</a> ou solicitar acesso junto ao administrador do sistema.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+    
+{% endblock %}

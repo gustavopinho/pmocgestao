@@ -1,0 +1,192 @@
+{% extends "cliente/relatorios/base_landscape.html" %}
+
+{% load staticfiles %}
+{% load operacao %}
+
+{% block header%}
+    <table style="border: 0;">
+        <tr style="border: 0;">
+            {% if empresa.logo %}
+            <td style="border: 0; height: 30pt; width: 120pt;">
+                <img src="{{ empresa.logo.url }}" style="height: 28pt; width: auto;">
+            </td>
+            {% endif %}
+            <td style="border: 0; font-weight: bold; font-size: 1.2em;">
+                PLANO DE MANUTENÇÃO, OPERAÇÃO E CONTROLE - PMOC <br>
+                Período de {{ start_date|date:"d/m/Y" }} a {{ end_date|date:"d/m/Y" }}
+            </td>
+        </tr>
+    </table>
+{% endblock %}
+
+{% block content%}
+    <table>
+        <tr>
+            <th width="400pt" colspan="2" class="text-center">DADOS DO EMPREENDIMENTO</th>
+            <th width="400pt" colspan="2" class="text-center">DADOS DO RESPONSÁVEL TÉCNICO</th>
+        </tr>
+        <tr>
+            <th width="100px" style="text-align: left;">Razão Social</th>
+            <td>{{ cliente.razao_social }}</td>
+            <th width="100px" style="text-align: left;">Razão Social</th>
+            <td>{{ equipamento.ambiente.unidade.responsavel.nome }}</td>
+        </tr>
+        <tr>
+            <th width="100px" style="text-align: left;">CNPJ</th>
+            <td>{{ cliente.cnpj }}</td>
+            <th width="100px" style="text-align: left;">CNPJ/CPF</th>
+            <td>{{ equipamento.ambiente.unidade.responsavel.cnpj }}</td>
+        </tr>
+        <tr>
+            <th width="120px" style="text-align: left;">Endereço</th>
+            <td>
+                {{ cliente.logradouro }}, 
+                N° {{ cliente.numero }} - 
+                {{ cliente.bairro }} - 
+                {{ cliente.cidade }}/{{ cliente.uf }} - CEP: {{ cliente.cep }}
+            </td>
+            <th width="120px" style="text-align: left;">Endereço</th>
+            <td>
+                {{ equipamento.ambiente.unidade.responsavel.logradouro }}, N° {{ equipamento.ambiente.unidade.responsavel.numero }} - {{ equipamento.ambiente.unidade.responsavel.bairro }} - {{ equipamento.ambiente.unidade.responsavel.cidade }}/{{ equipamento.ambiente.unidade.responsavel.uf }} - CEP: {{ equipamento.ambiente.unidade.responsavel.cep }}
+            </td>
+        </tr>
+        <tr>
+            <th width="120px" style="text-align: left;">Contato</th>
+            <td>{{ cliente.fone }} - {{ cliente.celular }} - {{ clinete.email }}</td>
+            <th width="120px" style="text-align: left;">Contato</th>
+            <td>{{ equipamento.ambiente.unidade.responsavel.fone }} - {{ equipamento.ambiente.unidade.responsavel.celular }} - {{ equipamento.ambiente.unidade.responsavel.email }}</td>
+        </tr>
+        <tr>
+            <th width="100px" style="text-align: left;">Resp PMOC</th>
+            <td>{{ empresa.razao_social }}</td>
+            <th width="100px" style="text-align: left;">Eng Resp / Crea / ART </th>
+            <td>{{ equipamento.ambiente.unidade.responsavel.registro_conselho }}</td>
+        </tr>
+    </table>
+    <br>
+    <table>
+        <tr class="colorido">
+            <th colspan="8" class="text-center">
+                RELAÇÃO DOS AMBIENTES CLIMATIZADOS
+            </th>
+        </tr>
+        <tr class="colorido">
+            <th rowspan="2" class="text-center">Identificação do Ambiente</th>
+            <th rowspan="2" class="text-center">Área Climatizada</th>
+            <th rowspan="2" class="text-center">Localização</th>
+            <th rowspan="2" class="text-center">Nº Ocupantes (Fixos/Flutantes)</th>
+            <th rowspan="2" class="text-center">Carga Térmica</th>
+            <th colspan="3" class="text-center">Equipamentos</th>
+        </tr>
+        <tr class="colorido">
+            <th class="text-center">Tipo</th>
+            <th class="text-center">Marca</th>
+            <th class="text-center">Capacidade</th>
+        </tr>
+        <tr>
+            <td>{{ equipamento.ambiente.nome }}</td>
+            <td>{{ equipamento.ambiente.area }} m²</td>
+            <td>{{ equipamento.ambiente.unidade.nome }}</td>
+            <td>{{ equipamento.ambiente.ocupantes }}</td>
+            <td>{{ equipamento.ambiente.carga_termica }} BTUs</td>
+            <td>{{ equipamento.grupo.nome }}</td>
+            <td>{{ equipamento.fabricante }}</td>
+            <td>{{ equipamento.capacidade }} BTUs</td>
+        </tr>
+    </table>
+    <br>
+    <table>
+        <tr class="colorido">
+            <th style="width: 40pt;">Item</th>
+            <th>Atividades</th>
+            <th colspan="13" class="text-center">Planejamento anual</th>
+        </tr>
+            
+        {% for categoria in categorias %}
+            <tr class="colorido">
+                <th style="text-align: left;">{{ categoria.codigo }}</th>
+                <th style="text-align: left;">{{ categoria.nome }}</th>
+                <th class="text-center" style="width: 90pt;">Intervalo</th>
+                {% for key, month in months.items %}
+                    <th class="text-center" style="width: 50pt;">{{ month.month.get_short_name }}</th>
+                {% endfor %}
+            </tr>
+            {% for operacao in categoria.operacoes.all %}
+            <tr>
+                <td style="text-align: left;">{{ categoria.codigo }}.{{ operacao.codigo }}</td>
+                <td>{{ operacao.nome }}</td>
+                <td class="text-center">{{ operacao.intervalo.nome }}</td>
+                <td class="text-center">{% operacao operacao.pk 1 agenda %}</td>
+                <td class="text-center">{% operacao operacao.pk 2 agenda %}</td>
+                <td class="text-center">{% operacao operacao.pk 3 agenda %}</td>
+                <td class="text-center">{% operacao operacao.pk 4 agenda %}</td>
+                <td class="text-center">{% operacao operacao.pk 5 agenda %}</td>
+                <td class="text-center">{% operacao operacao.pk 6 agenda %}</td>
+                <td class="text-center">{% operacao operacao.pk 7 agenda %}</td>
+                <td class="text-center">{% operacao operacao.pk 8 agenda %}</td>
+                <td class="text-center">{% operacao operacao.pk 9 agenda %}</td>
+                <td class="text-center">{% operacao operacao.pk 10 agenda %}</td>
+                <td class="text-center">{% operacao operacao.pk 11 agenda %}</td>
+                <td class="text-center">{% operacao operacao.pk 12 agenda %}</td>
+            </tr>
+            {% endfor %}
+        {% endfor %}
+    </table>
+    <br>
+    * Legendas<br>
+    <b>A</b> - Agendado <br>
+    <b>E</b> - Executado <br>
+    <b>NE</b> - Não executado
+    <br>
+    <div class="pagebreak"> </div>
+    <table>
+        <tr class="colorido">
+            <th colspan="8" class="text-center">
+                ANOTAÇÕES
+            </th>
+        </tr>
+        <tr class="colorido">
+            <th rowspan="2" class="text-center">
+                Data
+            </th>
+            <th colspan="2" class="text-center">
+                Pressão
+            </th>
+            <th colspan="2" class="text-center">
+                Temp Cº
+            </th>
+            <th colspan="2" class="text-center">
+                Elétrica
+            </th>
+            <th rowspan="2" width="500px" class="text-center">
+                Outros (Ocorrências / Observações)
+            </th>
+        </tr>
+        <tr class="colorido">
+            <th class="text-center">Alta</th>
+            <th class="text-center">Baixa</th>
+            <th class="text-center">Insuflamento</th>
+            <th class="text-center">Retorno</th>
+            <th class="text-center">Tensão</th>
+            <th class="text-center">Corrente</th>
+        </tr>
+        {% for manutencao in manutencoes %}
+            {% for medicao in manutencao.medicoes.all %}
+            <tr>
+                <td class="text-center">{{ manutencao.data_execucao |date:"d/m/Y" }}</td>
+                <td class="text-center">{{ medicao.pressao_baixa }}</td>
+                <td class="text-center">{{ medicao.pressao_alta }}</td>
+                <td class="text-center">{{ medicao.temperatura_insuflamento }}</td>
+                <td class="text-center">{{ medicao.temperatura_retorno }}</td>
+                <td class="text-center">{{ medicao.tensao }}</td>
+                <td class="text-center">{{ medicao.corrente }}</td>
+                <td width="500px">{{ medicao.observacao }}</td>
+            </tr>
+            {% endfor%}
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block footer%}
+    <pdf:pagenumber> de <pdf:pagecount> - app.pmocgestao.com.br
+{% endblock %}

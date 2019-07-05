@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+{% load pagination %}
+{% load numbering %}
+
+{% block title %}
+    Usuários | {{ block.super }}
+{% endblock %}
+
+{% block content %}
+<section class="content-header">
+    <h1>Usuários</h1>
+    <ol class="breadcrumb">
+        <li><a href="{% url 'core:dashboard' %}">Dashboard</a></li>
+        <li class="active">Usuários</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            {% include 'alert.html' %}
+        </div>
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">
+                        <a class="btn btn-sm btn-success" href="{% url 'empresa:user_create' empresa.pk %}" >
+                            <i class="fa fa-plus-circle" aria-hidden="true"></i> 
+                            Novo
+                        </a>
+                    </h3>
+                    {% include 'search.html' %}
+                </div>
+                <div class="box-body table-responsive">
+                    <div class="table-responsive">
+                        <table class="table table-condensed table-hover">
+                            <tr>
+                                <th>Usuário</th>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Acesso</th>
+                                <th>Situação</th>
+                                <th></th>
+                            </tr>
+                            {% for obj in page_obj %}
+                            <tr>
+                                <td>{{ obj.usuario.username }}</td>
+                                <td>{{ obj.usuario.name }}</td>
+                                <td>{{ obj.usuario.email }}</td>
+                                <td>{{ obj.get_acesso_display }}</td>
+                                <td>
+                                    {% if obj.usuario.is_active %}
+                                        <label class="label label-success">Ativo</label>
+                                    {% else %}
+                                        <label class="label label-danger">Desativado</label>
+                                    {% endif %}
+                                </td>
+                                <td class="text-right">
+                                    <a href="{% url 'empresa:user_gerar_acesso' empresa.pk obj.usuario.pk %}" class="btn btn-sm btn-warning">
+                                        <i class="fa fa-lock" aria-hidden="true"></i> 
+                                        Gerar Acesso
+                                    </a>
+                                    <a href="{% url 'empresa:user_update_password' empresa.pk obj.usuario.pk %}" class="btn btn-sm btn-default">
+                                        <i class="fa fa-asterisk" aria-hidden="true"></i>
+                                        Alterar Senha
+                                    </a>
+                                    <a href="{% url 'empresa:user_update' empresa.pk obj.usuario.pk %}" class="btn btn-sm btn-info">
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 
+                                        Editar
+                                    </a>
+                                    <a href="{% url 'empresa:user_delete' empresa.pk obj.usuario.pk %}" class="btn btn-sm btn-danger">
+                                        <i class="fa fa-trash-o" aria-hidden="true"></i> 
+                                        Excluír
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    <div class="box-footer">
+                        {% pagination request paginator page_obj %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

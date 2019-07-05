@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+
+{% block title %}
+    Técnico | {{ block.super }}
+{% endblock %}
+
+{% block content %}
+<section class="content-header">
+    <h1>Cadastrar Técnico</h1>
+    <ol class="breadcrumb">
+        <li><a href="{% url 'core:dashboard' %}">Dashboard</a></li>
+        <li><a href="{% url 'empresa:tecnico_list' empresa.pk %}">Técnicos</a></li>
+        <li class="active">Cadastro</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            {% include 'alert.html' %}
+        </div>
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <a class="btn btn-sm btn-info" href="{% url 'empresa:tecnico_list' empresa.pk %}">
+                        <i class="fa fa-reply" aria-hidden="true"></i> 
+                        Voltar
+                    </a>
+                </div>
+                <div class="box-body table-responsive">
+                    <form class="form" method="post">
+                        {% csrf_token %}
+                        <fieldset>
+                            <legend>Responsável</legend>
+                            <div class="col-md-4 form-group{% if form.nome.errors %} has-error{% endif %}">
+                                <label for="{{ form.nome.auto_id }}" class="control-label">
+                                    {{ form.nome.label }}
+                                </label>
+                                {% render_field form.nome class='form-control' %}
+                                {% for error in form.nome.errors %}
+                                    <span class="help-block">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Endereço</legend>
+                            <div class="col-md-2 form-group{% if form.cep.errors %} has-error{% endif %}">
+                                <label for="{{ form.cep.auto_id }}" class="control-label">
+                                    {{ form.cep.label }}
+                                </label>
+                                {% render_field form.cep class='form-control cep' %}
+                                {% for error in form.cep.errors %}
+                                    <span class="help-block">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-4 form-group{% if form.logradouro.errors %} has-error{% endif %}">
+                                <label for="{{ form.logradouro.auto_id }}" class="control-label">
+                                    {{ form.logradouro.label }}
+                                </label>
+                                {% render_field form.logradouro class='form-control' %}
+                                {% for error in form.logradouro.errors %}
+                                    <span class="help-block">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-2 form-group{% if form.numero.errors %} has-error{% endif %}">
+                                <label for="{{ form.numero.auto_id }}" class="control-label">
+                                    {{ form.numero.label }}
+                                </label>
+                                {% render_field form.numero class='form-control' %}
+                                {% for error in form.numero.errors %}
+                                    <span class="help-block">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-4 form-group{% if form.complemento.errors %} has-error{% endif %}">
+                                <label for="{{ form.complemento.auto_id }}" class="control-label">
+                                    {{ form.complemento.label }}
+                                </label>
+                                {% render_field form.complemento class='form-control' %}
+                                {% for error in form.complemento.errors %}
+                                    <span class="help-block">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-4 form-group{% if form.bairro.errors %} has-error{% endif %}">
+                                <label for="{{ form.bairro.auto_id }}" class="control-label">
+                                    {{ form.bairro.label }}
+                                </label>
+                                {% render_field form.bairro class='form-control' %}
+                                {% for error in form.bairro.errors %}
+                                    <span class="help-block">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-4 form-group{% if form.cidade.errors %} has-error{% endif %}">
+                                <label for="{{ form.cidade.auto_id }}" class="control-label">
+                                    {{ form.cidade.label }}
+                                </label>
+                                {% render_field form.cidade class='form-control' %}
+                                {% for error in form.cidade.errors %}
+                                    <span class="help-block">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-2 form-group{% if form.uf.errors %} has-error{% endif %}">
+                                <label for="{{ form.uf.auto_id }}" class="control-label">
+                                    {{ form.uf.label }}
+                                </label>
+                                {% render_field form.uf class='form-control' %}
+                                {% for error in form.uf.errors %}
+                                    <span class="help-block">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Contato</legend>
+                            <div class="col-md-4 form-group{% if form.email.errors %} has-error{% endif %}">
+                                <label for="{{ form.email.auto_id }}" class="control-label">
+                                    {{ form.email.label }}
+                                </label>
+                                {% render_field form.email class='form-control' %}
+                                {% for error in form.email.errors %}
+                                    <span class="help-block">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-3 form-group{% if form.fone.errors %} has-error{% endif %}">
+                                <label for="{{ form.fone.auto_id }}" class="control-label">
+                                    {{ form.fone.label }}
+                                </label>
+                                {% render_field form.fone class='form-control phone' %}
+                                {% for error in form.fone.errors %}
+                                    <span class="help-block">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-3 form-group{% if form.celular.errors %} has-error{% endif %}">
+                                <label for="{{ form.celular.auto_id }}" class="control-label">
+                                    {{ form.celular.label }}
+                                </label>
+                                {% render_field form.celular class='form-control phone' %}
+                                {% for error in form.celular.errors %}
+                                    <span class="help-block">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        </fieldset>
+                        <div class="col-md-12 text-right">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fa fa-floppy-o" aria-hidden="true"></i> 
+                                Salvar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

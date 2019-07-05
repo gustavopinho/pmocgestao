@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Dashboard |{{ block.super }}
+{% endblock %}
+
+{% block content %}
+<section class="content-header">
+    <h1>PMOC Gestão Dashboard</h1>
+    <ol class="breadcrumb">
+        <li class="active">Dashboard</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            {% include 'alert.html' %}
+        </div>
+    </div>
+    <div class="col-md-12">
+        
+    </div>
+</section>
+    
+{% endblock %}

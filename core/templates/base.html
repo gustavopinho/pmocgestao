@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    {% load staticfiles %}
+    <!-- Standard Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Language" content="pt-br">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+    <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+
+    <!-- Site Properties -->
+    <title> {% block title %} PMOC Gestão {% endblock %}</title>
+    <link rel=stylesheet type=text/css href="{% static 'css/vendor.min.css' %}">
+    <link rel=stylesheet type=text/css href="{% static 'css/main.min.css' %}">
+    
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+
+<body class="sidebar-mini skin-black-light">
+    <!-- Page Contents -->
+    <div class="wrapper">
+        {% include 'base_header.html' %}
+        {% include 'base_sidebar.html' %}
+
+        <div class="content-wrapper">
+            {% block content %} {% endblock %}
+        </div>
+
+        {% include 'base_footer.html' %}
+    </div>
+    <script src="{% static 'js/vendor.min.js' %}"></script>
+    <script src="{% static 'js/main.min.js' %}"></script>
+    {% block inlinescript %} {% endblock %}
+</body>
+
+</html>

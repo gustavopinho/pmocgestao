@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}
+    {{ cliente.nome }} Dashboard |{{ block.super }}
+{% endblock %}
+
+{% block content %}
+<section class="content-header">
+    <h1>{{ cliente.nome }} Dashboard</h1>
+    <ol class="breadcrumb">
+        <li class="active">{{ cliente.nome }}</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col col-md-4">
+            <div class="info-box">
+                <span class="info-box-icon bg-aqua">
+                    <i class="fa fa-television" aria-hidden="true"></i>
+                </span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Total de Equipamentos</span>
+                    <span class="info-box-number">
+                        {{ cliente.get_qtd_equipamentos }}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col col-md-4">
+            <div class="info-box">
+                <span class="info-box-icon bg-green">
+                    <i class="fa fa-television" aria-hidden="true"></i>
+                </span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Equipamentos Ativos</span>
+                    <span class="info-box-number">
+                        {{ cliente.get_qtd_equipamentos_ativos }}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col col-md-4">
+            <div class="info-box">
+                <span class="info-box-icon bg-red">
+                    <i class="fa fa-television" aria-hidden="true"></i>
+                </span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Equipamentos Desativados</span>
+                    <span class="info-box-number">
+                        {{ cliente.get_qtd_equipamentos_desativados }}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            {% include 'alert.html' %}
+        </div>
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Manutenções</h3>
+                </div>
+                <div class="box-body">
+                    <div class="row" id="app-manutencoes">
+                        <div class="col col-md-12">
+                            <label class="label-control">Selecione o ano [[ ano ]]</label>
+                            <select class="form-control" v-model="ano" @change="refresh">
+                                {% for ano in cliente.get_ano_manutencoes %}
+                                <option :value="{{ ano }}">{{ ano }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col col-md-4">
+                            <h3>Manutençõe agendadas e executadas [[ ano ]]</h3>
+                            <pie-chart :chart-data="chartDataAno"></pie-chart>
+                        </div>
+                        <div class="col col-md-8">
+                            <h3>Manutençõe agendadas e executadas [[ ano ]] por mês</h3>
+                            <bar-chart :chart-data="chartDataMes" ></bar-chart>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    
+{% endblock %}
+
+{% block inlinescript %}
+    <script src="{% static 'js/vue.min.js' %}"></script>
+    <script src="{% static 'js/cliente-dashboard.min.js' %}"></script>
+    <script type="text/javascript">
+        appManutencoes.empresa = {{ cliente.empresa.pk }};
+        appManutencoes.cliente = {{ cliente.pk }}
+        appManutencoes.getManutencaoMes();
+        appManutencoes.getManutencaoAno();
+    </script>
+{% endblock %}

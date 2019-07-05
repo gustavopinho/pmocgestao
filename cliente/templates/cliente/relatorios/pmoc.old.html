@@ -1,0 +1,189 @@
+{% extends "cliente/relatorios/base.html" %}
+
+{% load staticfiles %}
+{% load operacao %}
+
+{% block content %}
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-md-3 text-left">
+            {% if empresa.logo %}
+            <img src="{{ empresa.logo.url }}" width="100px;">
+            {% endif %}
+        </div>
+        <div class="col-md-9 text-center" style="font-weight: bold; font-size: 14pt;">
+            PLANO DE MANUTENÇÃO, OPERAÇÃO E CONTROLE - PMOC
+        </div>
+    </div>
+    
+    <table>
+        <tr>
+            <th colspan="2" class="text-center">DADOS DO EMPREENDIMENTO</th>
+            <th colspan="2" class="text-center">DADOS DO RESPONSÁVEL TÉCNICO</th>
+        </tr>
+        
+        <tr>
+            <th width="100px">Razão Social</th>
+            <td>{{ cliente.razao_social }}</td>
+            <th width="100px">Razão Social</th>
+            <td>{{ equipamento.ambiente.unidade.responsavel.nome }}</td>
+        </tr>
+        <tr>
+            <th width="100px" style="text-align: left;">CNPJ</th>
+            <td>{{ cliente.cnpj }}</td>
+            <th width="100px" style="text-align: left;">CNPJ/CPF</th>
+            <td>{{ equipamento.ambiente.unidade.responsavel.cnpj }}</td>
+        </tr>
+        <tr>
+            <th width="120px" style="text-align: left;">Endereço</th>
+            <td>
+                {{ cliente.logradouro }}, 
+                N° {{ cliente.numero }} - 
+                {{ cliente.bairro }} - 
+                {{ cliente.cidade }}/{{ cliente.uf }} - CEP: {{ cliente.cep }}
+            </td>
+            <th width="120px" style="text-align: left;">Endereço</th>
+            <td>
+                {{ equipamento.ambiente.unidade.responsavel.logradouro }}, N° {{ equipamento.ambiente.unidade.responsavel.numero }} - {{ equipamento.ambiente.unidade.responsavel.bairro }} - {{ equipamento.ambiente.unidade.responsavel.cidade }}/{{ equipamento.ambiente.unidade.responsavel.uf }} - CEP: {{ equipamento.ambiente.unidade.responsavel.cep }}
+            </td>
+        </tr>
+        <tr>
+            <th width="120px" style="text-align: left;">Contato</th>
+            <td>{{ cliente.fone }} - {{ cliente.celular }} - {{ clinete.email }}</td>
+            <th width="120px" style="text-align: left;">Contato</th>
+            <td>{{ equipamento.ambiente.unidade.responsavel.fone }} - {{ equipamento.ambiente.unidade.responsavel.celular }} - {{ equipamento.ambiente.unidade.responsavel.email }}</td>
+        </tr>
+        <tr>
+            <th width="100px" style="text-align: left;">Resp PMOC</th>
+            <td>{{ empresa.razao_social }}</td>
+            <th width="100px" style="text-align: left;">Eng Resp / Crea / ART </th>
+            <td>{{ equipamento.ambiente.unidade.responsavel.registro_conselho }}</td>
+        </tr>
+    </table>
+    <table>
+        <tr class="colorido">
+            <th colspan="8" class="text-center">
+                RELAÇÃO DOS AMBIENTES CLIMATIZADOS
+            </th>
+        </tr>
+        <tr class="colorido">
+            <th rowspan="2" class="text-center">Identificação do Ambiente</th>
+            <th rowspan="2" class="text-center">Área Climatizada</th>
+            <th rowspan="2" class="text-center">Localização</th>
+            <th rowspan="2" class="text-center">Nº Ocupantes (Fixos/Flutantes)</th>
+            <th rowspan="2" class="text-center">Carga Térmica</th>
+            <th colspan="3" class="text-center">Equipamentos</th>
+        </tr>
+        <tr class="colorido">
+            <th class="text-center">Tipo</th>
+            <th class="text-center">Marca</th>
+            <th class="text-center">Capacidade</th>
+        </tr>
+        <tr>
+            <td>{{ equipamento.ambiente.nome }}</td>
+            <td>{{ equipamento.ambiente.area }} m²</td>
+            <td>{{ equipamento.ambiente.unidade.nome }}</td>
+            <td>{{ equipamento.ambiente.ocupantes }}</td>
+            <td>{{ equipamento.ambiente.carga_termica }} BTUs</td>
+            <td>{{ equipamento.grupo.nome }}</td>
+            <td>{{ equipamento.nome }}</td>
+            <td>{{ equipamento.capacidade }} BTUs</td>
+        </tr>
+    </table>
+    <br>
+    <br>
+    <table style="font-size: 1.2em;">
+        <tr class="colorido">
+            <th class="center">Item</th>
+            <th class="center">Atividades</th>
+            <th colspan="13" class="text-center">Planejamento anual</th>
+        </tr>
+            
+        {% for categoria in categorias %}
+            <tr class="colorido">
+                <th style="width: 30px;">{{ categoria.codigo }}</th>
+                <th>{{ categoria.nome }}</th>
+                <th class="text-center" style="width: 90px;">Periodicidade</th>
+                <th class="text-center" style="width: 60px;">Jan</th>
+                <th class="text-center" style="width: 60px;">Fev</th>
+                <th class="text-center" style="width: 60px;">Mar</th>
+                <th class="text-center" style="width: 60px;">Abr</th>
+                <th class="text-center" style="width: 60px;">Mai</th>
+                <th class="text-center" style="width: 60px;">Jun</th>
+                <th class="text-center" style="width: 60px;">Jul</th>
+                <th class="text-center" style="width: 60px;">Ago</th>
+                <th class="text-center" style="width: 60px;">Set</th>
+                <th class="text-center" style="width: 60px;">Out</th>
+                <th class="text-center" style="width: 60px;">Nov</th>
+                <th class="text-center" style="width: 60px;">Dez</th>
+            </tr>
+            {% for operacao in categoria.operacoes.all %}
+            <tr>
+                <td>{{ categoria.codigo }}.{{ operacao.codigo }}</td>
+                <td>{{ operacao.nome }}</td>
+                <td class="text-center">{{ operacao.intervalo.nome }}</td>
+                <td class="text-center" style="width: 60px;">{% operacao equipamento.id operacao.id ano '1' %}</td>
+                <td class="text-center" style="width: 60px;">{% operacao equipamento.id operacao.id ano '2' %}</td>
+                <td class="text-center" style="width: 60px;">{% operacao equipamento.id operacao.id ano '3' %}</td>
+                <td class="text-center" style="width: 60px;">{% operacao equipamento.id operacao.id ano '4' %}</td>
+                <td class="text-center" style="width: 60px;">{% operacao equipamento.id operacao.id ano '5' %}</td>
+                <td class="text-center" style="width: 60px;">{% operacao equipamento.id operacao.id ano '6' %}</td>
+                <td class="text-center" style="width: 60px;">{% operacao equipamento.id operacao.id ano '7' %}</td>
+                <td class="text-center" style="width: 60px;">{% operacao equipamento.id operacao.id ano '8' %}</td>
+                <td class="text-center" style="width: 60px;">{% operacao equipamento.id operacao.id ano '9' %}</td>
+                <td class="text-center" style="width: 60px;">{% operacao equipamento.id operacao.id ano '10' %}</td>
+                <td class="text-center" style="width: 60px;">{% operacao equipamento.id operacao.id ano '11' %}</td>
+                <td class="text-center" style="width: 60px;">{% operacao equipamento.id operacao.id ano '12' %}</td>
+            </tr>
+            {% endfor %}
+        {% endfor %}
+    </table>
+    <br><br>
+    <div class="pagebreak"> </div>
+    <table style="font-size: 1.2em;">
+        <tr class="colorido">
+            <th colspan="8" class="text-center">
+                ANOTAÇÕES
+            </th>
+        </tr>
+        <tr class="colorido">
+            <th rowspan="2" class="text-center">
+                Data
+            </th>
+            <th colspan="2" class="text-center">
+                Pressão
+            </th>
+            <th colspan="2" class="text-center">
+                Temp Cº
+            </th>
+            <th colspan="2" class="text-center">
+                Elétrica
+            </th>
+            <th width="560pt" rowspan="2" class="text-center">
+                Outros (Ocorrências / Observações)
+            </th>
+        </tr>
+        <tr class="colorido">
+            <th class="text-center">Alta</th>
+            <th class="text-center">Baixa</th>
+            <th class="text-center">Insuflamento</th>
+            <th class="text-center">Retorno</th>
+            <th class="text-center">Tensão</th>
+            <th class="text-center">Corrente</th>
+        </tr>
+        {% for manutencao in manutencoes %}
+            {% for medicao in manutencao.medicoes.all %}
+            <tr>
+                <td class="text-center">{{ manutencao.data_execucao |date:"d/m/Y" }}</td>
+                <td class="text-center">{{ medicao.pressao_baixa }}</td>
+                <td class="text-center">{{ medicao.pressao_alta }}</td>
+                <td class="text-center">{{ medicao.temperatura_insuflamento }}</td>
+                <td class="text-center">{{ medicao.temperatura_retorno }}</td>
+                <td class="text-center">{{ medicao.tensao }}</td>
+                <td class="text-center">{{ medicao.corrente }}</td>
+                <td>{{ medicao.observacao }}</td>
+            </tr>
+            {% endfor%}
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

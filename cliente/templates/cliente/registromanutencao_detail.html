@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block title %} Manutenção - {{ object }} - {{ object.data_prevista |date:"d/m/Y" }} | {{ block.super }} {% endblock %}
+{% block content %}
+<section class="content-header">
+    <h1>Manutenção - {{ object }} - {{ object.data_prevista |date:"d/m/Y" }} | {{ object.cliente }}</h1>
+    <ol class="breadcrumb">
+        <li>
+            <a href="{% url 'empresa:cliente:cliente_dashboard' object.cliente.empresa.pk object.cliente.pk %}">
+                Dashboard
+            </a>
+        </li>
+        <li><a href="{% url 'empresa:cliente:registro_manutencao_list' object.cliente.empresa.pk object.cliente.pk %}">Manutenções</a></li>
+        <li class="active">{{ object }} - {{ object.data_prevista |date:"d/m/Y" }}</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            {% include 'alert.html' %}
+        </div>
+        <div class="col-md-12">
+
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <a class="btn btn-sm btn-info" href="{% url 'empresa:cliente:registro_manutencao_list'  object.cliente.empresa.pk object.cliente.pk %}">
+                            <i class="fa fa-reply" aria-hidden="true"></i> 
+                            Voltar
+                        </a>
+                    </div>
+                    <div class="box-body table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <tr>
+                                <th>Unidade:</th>
+                                <td>{{ object.equipamento.ambiente.unidade.nome }}</td>
+                            </tr>
+                            <tr>
+                                <th>Departamento:</th>
+                                <td>{{ object.equipamento.ambiente.atividade.nome }}</td>
+                            </tr>
+                            <tr>
+                                <th>Ambiente:</th>
+                                <td>{{ object.equipamento.ambiente.nome }}</td>
+                            </tr>
+                            <tr>
+                                <th>Grupo:</th>
+                                <td>{{ object.equipamento.grupo.nome }}</td>
+                            </tr>
+                            <tr>
+                                <th>Equipamento:</th>
+                                <td>{{ object.equipamento.nome }}</td>
+                            </tr>
+                            <tr>
+                                <th>Técnico:</th>
+                                <td>{{ object.tecnico }}</td>
+                            </tr>
+                            <tr>
+                                <th>Tipo de Manutenção:</th>
+                                <td>{{ object.tipo.nome }}</td>
+                            </tr>
+                            <tr>
+                                <th>Datas:</th>
+                                <td>
+                                    <table class="table table-condensed table-bordered">
+                                        <tr>
+                                            <th>Data Prevista</th>
+                                            <th>Data Execução</th>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                {{ object.data_prevista |date:"d/m/Y" }}
+                                            </td>
+                                            <td>
+                                                {% if object.data_execusao %}
+                                                    {{ object.data_execusao |date:"d/m/Y" }}
+                                                {% else %}
+                                                    Não executado.
+                                                {% endif %}    
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th colspan="2">Observações</th>
+                            </tr>
+                            <tr>
+                                <td colspan="2">{{ object.tipo.observacao }}</td>
+                            </tr>
+                            <tr>
+                                <th colspan="2">Operações</th>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <table class="table table-condensed table-bordered table-striped">
+                                        <tr>
+                                            <th>Grupo</th>
+                                            <th>Intervalo</th>
+                                            <th>Operação</th>
+                                        </tr>
+                                        {% for operacao in object.operacoes.all %}
+                                        <tr>
+                                            <td>{{ operacao.operacao.grupo.nome }}</td>
+                                            <td>{{ operacao.operacao.intervalo.nome }}</td>
+                                            <td>{{ operacao.operacao.nome }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th colspan="2">Medições</th>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <table class="table table-condensed table-bordered table-striped">
+                                        <tr>
+                                            <th colspan="2" class="text-center">Pressão</th>
+                                            <th colspan="2" class="text-center">Temp Cº</th>
+                                            <th colspan="2" class="text-center">Elétrica</th>
+                                            <th rowspan="2" class="text-center">Observação</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-center">Baixa</th>
+                                            <th class="text-center">Alta</th>
+                                            <th class="text-center">Insuflamento</th>
+                                            <th class="text-center">Retorno</th>
+                                            <th class="text-center">Tensão</th>
+                                            <th class="text-center">Corrente</th>
+                                        </tr>
+                                        {% for medicao in object.medicoes.all %}
+                                        <tr>
+                                            <td class="text-center">{{ medicao.pressao_baixa }}</td>
+                                            <td class="text-center">{{ medicao.pressao_alta }}</td>
+                                            <td class="text-center">{{ medicao.temperatura_insuflamento }}</td>
+                                            <td class="text-center">{{ medicao.temperatura_retorno }}</td>
+                                            <td class="text-center">{{ medicao.tensao }}</td>
+                                            <td class="text-center">{{ medicao.corrente }}</td>
+                                            <td>{{ medicao.observacao }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Anexos</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <ul class="list-group">
+                                    {% for anexo in object.anexos.all %}
+                                        <li class="list-group-item">
+                                            <a href="{{ anexo.anexo.url }}" target="_blank"> {{ anexo.nome }}</a>
+                                        </li>
+                                    {% endfor %}
+                                    </ul>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

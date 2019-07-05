@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+
+{% block title %}
+    Excluír Grupo de Operações | {{ block.super }}
+{% endblock %}
+
+{% block content %}
+<section class="content-header">
+    <h1>Excluír Grupo de Operações</h1>
+    <ol class="breadcrumb">
+        <li>
+            <a href="{% url 'empresa:cliente:cliente_dashboard' object.cliente.empresa.pk object.cliente.pk %}">
+                Dashboard
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'empresa:cliente:operacao_grupo_list' object.cliente.empresa.pk object.cliente.pk %}">
+                Grupo de Operações
+            </a>
+        </li>
+        <li class="active">Excluír</li>
+    </ol>
+</section>
+<section class="content">
+    {% include 'form_delete.html' %}
+</section>
+{% endblock %}

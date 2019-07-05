@@ -1,0 +1,14 @@
+<aside class="main-sidebar">
+    <section class="sidebar">
+        <ul class="sidebar-menu">
+            <li class="header">NAVEGAÇÃO</li>
+            <li>
+                <a href="{% url 'core:dashboard' %}">
+                    <i class="fa fa-tachometer"></i>
+                    <span> PMOC GESTÃO</span>
+                </a>
+            </li>
+            {% include 'empresa/sidebar.html' %}
+        </ul>
+    </section>
+</aside>

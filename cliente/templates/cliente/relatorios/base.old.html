@@ -1,0 +1,43 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <![endif]-->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <style type="text/css">
+            .pagebreak { page-break-before: always; } 
+
+            body {
+                font-family: "Times New Roman", Serif;
+                font-size: 8pt;
+            }
+
+            table {
+                width: 100%;
+            }
+
+            table tr th, table tr td {
+                padding: 2px;
+                margin: 0px;
+                font-family: "Times New Roman", Serif;
+                border: 1px solid #000;
+            }
+
+            h1 {
+                font-size: 14pt;
+                font-weight: bold;
+            }
+
+            .colorido {
+                background-color: #f2f2f2;
+            }
+        </style>
+    </head>
+
+    <body style="max-width: 842pt; margin-left: auto; margin-right: auto;">
+        <div style="width: 842pt; margin-left: auto; margin-right: auto; margin-bottom: 0px;">
+            {% block content %}  {% endblock %}
+        </div>
+    </body>
+</html>

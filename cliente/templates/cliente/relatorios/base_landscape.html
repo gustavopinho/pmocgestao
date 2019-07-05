@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{% block title%} {% endblock %}</title>
+    <style type="text/css">
+
+        /* a4 595x842 pts */
+        @page {
+            size: a4 landscape;
+            
+            @frame header_frame {          
+                -pdf-frame-content: header_content;
+                left: 50pt; width: 752pt; top: 40pt; height: 35pt;
+            }
+            
+            @frame content_frame {         
+                left: 50pt; width: 752pt; top: 75pt; height: 500pt;
+            }
+
+            @frame footer_frame {           
+                -pdf-frame-content: footer_content;
+                left: 50pt; width: 752pt; top: 575pt; height: 20pt;
+            }
+        }
+        
+        
+        /*@page {
+            size: a4;
+            
+            @frame header_frame {           
+                -pdf-frame-content: header_content;
+                left: 30pt; width: 545pt; top: 40pt; height: 35pt;
+            }
+            
+            @frame content_frame {           
+                left: 30pt; width: 545pt; top: 75pt; height: 749pt;
+            }
+
+            @frame footer_frame {           
+                -pdf-frame-content: footer_content;
+                left: 30pt; width: 545pt; top: 822pt; height: 20pt;
+            }
+        }*/
+
+        table {
+            width: 100%;
+            max-width: 100%;
+            background-color: #fff;
+            border-collapse: collapse;
+            margin: 0px;
+        }
+
+        table, tr, td, th {
+            border: 0.01em solid black;
+            margin: 0px;
+        }
+
+
+        th, td {
+            font-size: 0.9em;
+            margin: 0px;
+            padding-top: 1px;
+            padding-left: 2px;
+            padding-bottom: 0px;
+            vertical-align: middle;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+        <div id="header_content">
+            {% block header%} {% endblock %}
+        </div>
+        <div id="body_content">
+            {% block content%} {% endblock %}
+        </div>
+        <div id="footer_content">
+            {% block footer%} {% endblock %}
+        </div>
+</body>
+</html>
