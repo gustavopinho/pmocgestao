@@ -24,7 +24,7 @@
   "license": "ISC",
   "dependencies": {
     "admin-lte": "^2.3.11",
-    "bootbox": "^4.4.0",
+    "bootbox": "^5.3.4",
     "chart.js": "^2.7.2",
     "font-awesome": "^4.7.0",
     "ionicons": "^4.0.0",
